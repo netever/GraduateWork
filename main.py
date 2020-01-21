@@ -18,11 +18,11 @@ def csv_read(data):
 
 def get_link(html):
     soup = BeautifulSoup(html, 'lxml')
-    head = soup.find('div', id='k2Container').find_all(class_="catItemTitle")
-    for i in head:
+    source = soup.find('div', id='k2Container').find_all(class_="catItemTitle")
+    for i in source:
         link = 'https://ksu.edu.ru/travel' + i.contents[1].get('href')
-        heads = i.text
-        data = {'head': heads,
+        head = i.text
+        data = {'head': head,
                  'link': link}
         csv_read(data)
 
