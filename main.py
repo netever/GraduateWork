@@ -1,31 +1,8 @@
-import requests
-from bs4 import BeautifulSoup
-import csv
-import re
-# pip install beautifulsoup4
-# pip install lxml
+import web
+import purse_ksu
 
-def get_html(url):
-    r = requests.get(url)    # Получим метод Response
-    r.encoding = 'utf8'
-    return r.text   # Вернем данные объекта text
+html = web.get("https://ksu.edu.ru/travel")
+alldata = purse_ksu.get_link(html)
 
 
-def csv_read(data):
-    with open("data.txt", 'a') as file:
-        writer = csv.writer(file)
-        writer.writerow((data['head'], data['link']))
-
-def get_link(html):
-    soup = BeautifulSoup(html, 'lxml')
-    source = soup.find('div', id='k2Container').find_all(class_="catItemTitle")
-    for i in source:
-        link = 'https://ksu.edu.ru/travel' + i.contents[1].get('href')
-        head = i.text
-        data = {'head': head,
-                 'link': link}
-        csv_read(data)
-
-
-data = get_link(get_html('https://ksu.edu.ru/travel'))
 #https://ksu.edu.ru/travel
