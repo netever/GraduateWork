@@ -1,7 +1,7 @@
 import web
 from bs4 import BeautifulSoup
 
-def get_link(html):
+def get_data(html):
     soup = BeautifulSoup(html, 'lxml')
     source = soup.find('div', id='k2Container').find_all(class_="catItemTitle")
     alldata = list()
