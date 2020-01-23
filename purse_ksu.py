@@ -13,7 +13,8 @@ def get_data(html):
         data = {'head': head,
                 'link': link,
                 'text': text,
-                'tags': tags}
+                'tags': tags,
+                'type': "nobody"}
         alldata.append(data)
     return alldata
 
