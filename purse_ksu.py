@@ -8,8 +8,8 @@ def get_data(html):
     for i in source:
         link = 'https://ksu.edu.ru' + i.contents[1].get('href')
         head = i.text
-        text = get_text(web.get(link))
-        tags = get_tags(web.get(link))
+        text = __get_text(web.get(link))
+        tags = __get_tags(web.get(link))
         data = {'head': head,
                 'link': link,
                 'text': text,
@@ -17,7 +17,7 @@ def get_data(html):
         alldata.append(data)
     return alldata
 
-def get_text(html):
+def __get_text(html):
     soup = BeautifulSoup(html, 'lxml')
     source = soup.find('div', id='k2Container').find_all('p')
     text = ""
@@ -25,7 +25,7 @@ def get_text(html):
         text = text + i.text
     return text
 
-def get_tags(html):
+def __get_tags(html):
     soup = BeautifulSoup(html, 'lxml')
     source = soup.find('div', id='k2Container').find_all('li')
     tags = ""
