@@ -10,7 +10,9 @@ def get_data(html):
         head = i.text
         text = __get_text(web.get(link))
         tags = __get_tags(web.get(link))
-        data = {'head': head,
+        tags = tags.replace('\n','')
+        tags = tags.replace('# ', '')
+        data = {'head': head.replace('\n',''),
                 'link': link,
                 'text': text,
                 'tags': tags,
