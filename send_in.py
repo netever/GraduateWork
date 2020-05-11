@@ -13,7 +13,14 @@ def telegram ():
     messages = news(False ,True)
     for message in messages:
         strmess = message[1] + '\n' + message[2] + '\n' + message[3]
-        bot.send_message('@ksu_news', strmess)
+        if len(strmess) < 4096:
+            bot.send_message('@ksu_news', strmess)
+        else:
+            while len(strmess) > 4096:
+                bot.send_message('@ksu_news', strmess[0:4095])
+                strmess = strmess[4096:]
+                time.sleep(2)
+            bot.send_message('@ksu_news', strmess)
         time.sleep(2)
 
 
