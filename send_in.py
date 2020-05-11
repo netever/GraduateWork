@@ -9,7 +9,7 @@ def all ():
 
 
 def telegram ():
-    bot = telebot.TeleBot('1250660405:AAF6nUV8yu6Twojnxr3xEl8jxp7OUZ11X1c')
+    bot = telebot.TeleBot('token')
     messages = news(False ,True)
     for message in messages:
         strmess = message[1] + '\n' + message[2] + '\n' + message[3]
@@ -25,7 +25,7 @@ def telegram ():
 
 
 def VK ():
-    vk_session = vk_api.VkApi(token='6112d4a2efd1955f4ed952a5a9d30e2ede182d98bcf46420db88193ec9d90bd762bcf1cf227e9593b270a')
+    vk_session = vk_api.VkApi(token='token')
     vk = vk_session.get_api()
     messages = news(True)
     for message in messages:
