@@ -16,6 +16,7 @@ def telegram ():
     file = open("C://auth.txt", "r")
     token = file.readline()
     bot = telebot.TeleBot(token)
+    bot.config['api_key'] = token
     messages = news('telegram')
     for message in messages:
         strmess = message[1] + '\n' + message[2] + '\n' + message[3]
