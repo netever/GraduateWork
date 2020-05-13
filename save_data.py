@@ -36,4 +36,4 @@ def save_user(email, role):
             val = ("" + email, "" + role)
             cursor.execute(sql, val)
         elif sqlres > 0:
-            cursor.execute("UPDATE users SET role = " + role + " WHERE email = " + email)
+            cursor.execute("UPDATE users SET role = '" + role + "' WHERE email = '" + email + "'")
