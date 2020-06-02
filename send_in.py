@@ -7,27 +7,31 @@ from email.header import Header
 import smtplib
 
 def all ():
-    telegram()
-    VK()
-    mail()
+    if checkparam('telegram'):
+        telegram()
+    if checkparam('VK'):
+        VK()
+    if checkparam('mail'):
+        mail()
 
 
 def telegram ():
     file = open("C://auth.txt", "r")
-    token = file.readline()
+    token = file.readline()                                             #Берётся токен из файла auth.txt
     bot = telebot.TeleBot(token)
     bot.config['api_key'] = token
-    messages = news('telegram')
+    messages = news('telegram')                                         #Достаётся новость из базы данных
     for message in messages:
-        strmess = message[1] + '\n' + message[2] + '\n' + message[3]
-        if len(strmess) < 4096:
-            bot.send_message('@ksu_news', strmess)
-        else:
-            while len(strmess) > 4096:
+        strmess = message[1] + '\n' + message[2] + '\n' + message[3]    #Вставляется в сообщение заголовок,
+                                                                        #текст и тэги
+        if len(strmess) < 4096:                                         #В телеграме стоит ограничение сообщения
+            bot.send_message('@ksu_news', strmess)                      #на 4096 символов, поэтому разбиваем
+        else:                                                           #новость на несколько частей, если её
+            while len(strmess) > 4096:                                  #длина больше 4096 символов
                 bot.send_message('@ksu_news', strmess[0:4095])
                 strmess = strmess[4096:]
                 time.sleep(2)
-            bot.send_message('@ksu_news', strmess)
+            bot.send_message('@ksu_news', strmess)                      #отправка сообщения
         time.sleep(2)
 
 
@@ -72,6 +76,30 @@ def news(setting):
         elif setting == 'users':
             cursor.execute("SELECT * FROM users")
             return cursor.fetchall()
+
+def checkparam(setting):
+    connect = pymysql.connect(
+        host='localhost',
+        port=3308,
+        user='root',
+        password='',
+        db='ksu'
+    )
+    with connect:
+        cursor = connect.cursor()
+        if setting == 'VK':
+            sqlres = cursor.execute("SELECT * FROM `parametres` WHERE id = 1 AND send_vk = TRUE")
+            if sqlres > 0:
+                return True
+        elif setting == 'telegram':
+            sqlres = cursor.execute("SELECT * FROM `parametres` WHERE id = 1 AND send_telegram = TRUE")
+            if sqlres > 0:
+                return True
+        elif setting == 'mail':
+            sqlres = cursor.execute("SELECT * FROM `parametres` WHERE id = 1 AND send_mail = TRUE")
+            if sqlres > 0:
+                return True
+        return False
 
 def mail():
     messages = news('mail')

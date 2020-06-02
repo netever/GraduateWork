@@ -4,9 +4,10 @@
         <meta charset="utf-8">
         <title>Подписка на рассылку</title>
     </head>
-    <body>
+    <p>
         <form method="post" action="/new_user">
             <p>
+                <h1>Подписка на рассылку</h1>
                 <label for="email">Email: </label>
                 <input type="email" placeholder="user@gmail.com" id="email" name="email"/>
             </p>
@@ -22,5 +23,19 @@
                 <button type="submit">Отправить</button>
             </p>
         </form>
+        <form method="post" action="/del_user">
+            <h1>Отписаться от рассылки</h1>
+            <label for="email">Email: </label>
+            <input type="email" placeholder="user@gmail.com" id="email" name="email"/>
+            <button type="submit">Отписаться от рассылки</button>
+        </form>
+        <p>
+        <form method="post" action="/login">
+            <h1>Личный кабинет администратора</h1>
+            <input type="login" placeholder="login" id="login" name="login"/>
+            <input type="password" placeholder="password" id="password" name="password"/>
+            <button type="submit">авторизоваться</button>
+        </form>
+        </p>
     </body>
 </html>
