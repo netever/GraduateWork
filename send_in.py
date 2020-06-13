@@ -7,20 +7,20 @@ from email.header import Header
 import smtplib
 
 def all ():
-    if checkparam('telegram'):
-        telegram()
-    if checkparam('VK'):
-        VK()
-    if checkparam('mail'):
-        mail()
+    if __checkparam('telegram'):
+        __telegram()
+    if __checkparam('VK'):
+        __VK()
+    if __checkparam('mail'):
+        __mail()
 
 
-def telegram ():
+def __telegram ():
     file = open("C://auth.txt", "r")
     token = file.readline()                                             #Берётся токен из файла auth.txt
     bot = telebot.TeleBot(token)
     bot.config['api_key'] = token
-    messages = news('telegram')                                         #Достаётся новость из базы данных
+    messages = __news('telegram')                                         #Достаётся новость из базы данных
     for message in messages:
         strmess = message[1] + '\n' + message[2] + '\n' + message[3]    #Вставляется в сообщение заголовок,
                                                                         #текст и тэги
@@ -35,20 +35,20 @@ def telegram ():
         time.sleep(2)
 
 
-def VK ():
+def __VK ():
     file = open("C://auth.txt", "r")
     file.readline()
-    token = file.readline()
+    token = file.readline()                                 #Берётся токен из файла auth.txt
     vk_session = vk_api.VkApi(token=token)
-    vk = vk_session.get_api()
-    messages = news('VK')
+    vk = vk_session.get_api()                               #Авторизация по api вконтакте
+    messages = __news('VK')
     for message in messages:
         strmess = message[1] + '\n' + message[2] + '\n' + message[3]
-        vk.wall.post(from_group=1, owner_id='-195203785', message=strmess)
+        vk.wall.post(from_group=1, owner_id='-195203785', message=strmess) #Отправка новости
         time.sleep(2)
 
 
-def news(setting):
+def __news(setting):
     connect = pymysql.connect(
         host='localhost',
         port=3308,
@@ -77,7 +77,7 @@ def news(setting):
             cursor.execute("SELECT * FROM users")
             return cursor.fetchall()
 
-def checkparam(setting):
+def __checkparam(setting):
     connect = pymysql.connect(
         host='localhost',
         port=3308,
@@ -101,19 +101,19 @@ def checkparam(setting):
                 return True
         return False
 
-def mail():
-    messages = news('mail')
+def __mail():
+    messages = __news('mail')
     for message in messages:
         host = "smtp.gmail.com"
         password = 'ss145632'
         subject = message[1]
         to_addr = []
         if message[5] == 'teacher' or message[5] == 'anybody':
-            for user in news('users'):
+            for user in __news('users'):
                 if user[2] == 'teacher' or user[2] == 'anybody':
                     to_addr.append(user[1])
         elif message[5] == 'student' or message[5] == 'anybody':
-            for user in news('users'):
+            for user in __news('users'):
                 if user[2] == 'student' or user[2] == 'anybody':
                     to_addr.append(user[1])
         from_addr = "kgunovosti@gmail.com"

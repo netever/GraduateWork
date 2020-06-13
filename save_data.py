@@ -10,14 +10,14 @@ def save_db(data):
         db='ksu'
     )
 
-
     with connect:
         cursor = connect.cursor()
-        sqlres = cursor.execute("SELECT link FROM news WHERE link = '"+data['link']+"'")
-        if sqlres == 0:
+        sqlres = cursor.execute("SELECT link FROM news WHERE link = '"+data['link']+"'") #поиск такой же новости в бд
+        if sqlres == 0:                                                                  #если новости нет в бд
             sql = "INSERT news (head, text, tags, link, type) VALUES (%s, %s, %s, %s, %s)"
             val = ("" + data['head'], "" + data['text'], "" + data['tags'], "" + data['link'], "" + data['type'])
             cursor.execute(sql, val)
+
 
 def save_user(email, role):
     connect = pymysql.connect(
@@ -38,6 +38,7 @@ def save_user(email, role):
         elif sqlres > 0:
             cursor.execute("UPDATE users SET role = '" + role + "' WHERE email = '" + email + "'")
 
+
 def del_user(email):
     connect = pymysql.connect(
         host='localhost',
@@ -54,6 +55,7 @@ def del_user(email):
             sql = "DELETE FROM users WHERE email = '"+email+"'"
             cursor.execute(sql)
 
+
 def checkuser(user, passw):
     connect = pymysql.connect(
         host='localhost',
@@ -69,6 +71,7 @@ def checkuser(user, passw):
         if sqlres > 0:
             return True
     return False
+
 
 def changeparam(vk, telegram, mail):
     connect = pymysql.connect(

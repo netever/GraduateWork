@@ -4,9 +4,11 @@ import save_data
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/new_user', methods=['POST'])
 def new_user():
@@ -15,11 +17,13 @@ def new_user():
     save_data.save_user(email, role)
     return render_template('new_user.html')
 
+
 @app.route('/del_user', methods=['POST'])
 def del_user():
     email = request.form['email']
     save_data.del_user(email)
     return render_template('del_user.html')
+
 
 @app.route('/admin/')
 @login_required
@@ -41,6 +45,7 @@ def login():
             message = "Wrong username or password"
 
     return render_template('index.html', message=message)
+
 
 @app.route('/parametres', methods=['post', 'get'])
 def parametres():
