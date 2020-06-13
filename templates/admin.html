@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Панель админисратора</title>
+</head>
+<body>
+<form method="post" action="/parametres">
+    <p><t1>Это панель администратора.</t1></p>
+    <p><t1>Отправка в вк</t1></p>
+    <p><input type="radio" value="true" checked name="send_vk"/>Включить</p>
+    <p><input type="radio" value="false" checked name="send_vk"/>Выключить</p>
+    <p><t1>Отправка в телеграм</t1></p>
+    <p><input type="radio" value="true" checked name="send_tel"/>Включить</p>
+    <p><input type="radio" value="false" checked name="send_tel"/>Выключить</p>
+    <p><t1>Отправка на почту</t1></p>
+    <p><input type="radio" value="true" checked name="send_mail"/>Включить</p>
+    <p><input type="radio" value="false" checked name="send_mail"/>Выключить</p>
+    <button type="submit">Изменить параметры</button>
+</form>
+</body>
+</html>

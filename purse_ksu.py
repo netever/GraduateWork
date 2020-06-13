@@ -35,3 +35,4 @@ def __get_tags(html):
     for i in source:
         tags = tags + "#" + i.text + " "
     return tags
+

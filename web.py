@@ -1,6 +1,7 @@
 import requests
 
 def get(url):
-    r = requests.get(url)  # Получим метод Response
+    r = requests.get(url)
     r.encoding = 'utf8'
-    return r.text  # Вернем данные объекта text
+    return r.text
+
