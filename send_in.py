@@ -1,17 +1,18 @@
 import telebot
 import vk_api
 import pymysql
+import save_data
 import time
 from email.mime.text import MIMEText
 from email.header import Header
 import smtplib
 
 def all ():
-    if __checkparam('telegram'):
+    if save_data.checkparam('telegram'):
         __telegram()
-    if __checkparam('VK'):
+    if save_data.checkparam('VK'):
         __VK()
-    if __checkparam('mail'):
+    if save_data.checkparam('mail'):
         __mail()
 
 
@@ -20,7 +21,7 @@ def __telegram ():
     token = file.readline()                                             #Берётся токен из файла auth.txt
     bot = telebot.TeleBot(token)
     bot.config['api_key'] = token
-    messages = __news('telegram')                                         #Достаётся новость из базы данных
+    messages = save_data.news('telegram')                                         #Достаётся новость из базы данных
     for message in messages:
         strmess = message[1] + '\n' + message[2] + '\n' + message[3]    #Вставляется в сообщение заголовок,
                                                                         #текст и тэги
@@ -41,79 +42,30 @@ def __VK ():
     token = file.readline()                                 #Берётся токен из файла auth.txt
     vk_session = vk_api.VkApi(token=token)
     vk = vk_session.get_api()                               #Авторизация по api вконтакте
-    messages = __news('VK')
+    messages = save_data.news('VK')
     for message in messages:
         strmess = message[1] + '\n' + message[2] + '\n' + message[3]
         vk.wall.post(from_group=1, owner_id='-195203785', message=strmess) #Отправка новости
         time.sleep(2)
 
 
-def __news(setting):
-    connect = pymysql.connect(
-        host='localhost',
-        port=3308,
-        user='root',
-        password='',
-        db='ksu'
-    )
-    with connect:
-        cursor = connect.cursor()
-        if setting == 'VK':
-            cursor.execute("SELECT * FROM news WHERE send_vk = 0")
-            messages = cursor.fetchall()
-            cursor.execute("UPDATE news SET send_vk = 1 WHERE send_vk = 0")
-            return messages
-        elif setting == 'telegram':
-            cursor.execute("SELECT * FROM news WHERE send_telegram = 0")
-            messages = cursor.fetchall()
-            cursor.execute("UPDATE news SET send_telegram = 1 WHERE send_telegram = 0")
-            return messages
-        elif setting == 'mail':
-            cursor.execute("SELECT * FROM news WHERE send_mail = 0")
-            messages = cursor.fetchall()
-            cursor.execute("UPDATE news SET send_mail = 1 WHERE send_mail = 0")
-            return messages
-        elif setting == 'users':
-            cursor.execute("SELECT * FROM users")
-            return cursor.fetchall()
 
-def __checkparam(setting):
-    connect = pymysql.connect(
-        host='localhost',
-        port=3308,
-        user='root',
-        password='',
-        db='ksu'
-    )
-    with connect:
-        cursor = connect.cursor()
-        if setting == 'VK':
-            sqlres = cursor.execute("SELECT * FROM `parametres` WHERE id = 1 AND send_vk = TRUE")
-            if sqlres > 0:
-                return True
-        elif setting == 'telegram':
-            sqlres = cursor.execute("SELECT * FROM `parametres` WHERE id = 1 AND send_telegram = TRUE")
-            if sqlres > 0:
-                return True
-        elif setting == 'mail':
-            sqlres = cursor.execute("SELECT * FROM `parametres` WHERE id = 1 AND send_mail = TRUE")
-            if sqlres > 0:
-                return True
-        return False
+
+
 
 def __mail():
-    messages = __news('mail')
+    messages = save_data.news('mail')
     for message in messages:
         host = "smtp.gmail.com"
         password = 'ss145632'
         subject = message[1]
         to_addr = []
         if message[5] == 'teacher' or message[5] == 'anybody':
-            for user in __news('users'):
+            for user in save_data.news('users'):
                 if user[2] == 'teacher' or user[2] == 'anybody':
                     to_addr.append(user[1])
         elif message[5] == 'student' or message[5] == 'anybody':
-            for user in __news('users'):
+            for user in save_data.news('users'):
                 if user[2] == 'student' or user[2] == 'anybody':
                     to_addr.append(user[1])
         from_addr = "kgunovosti@gmail.com"

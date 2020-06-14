@@ -97,3 +97,58 @@ def changeparam(vk, telegram, mail):
         if mail == 'false':
             sqlres = cursor.execute("UPDATE parametres SET send_mail = FALSE WHERE id = 1")
     return False
+
+
+def news(setting):
+    connect = pymysql.connect(
+        host='localhost',
+        port=3308,
+        user='root',
+        password='',
+        db='ksu'
+    )
+    with connect:
+        cursor = connect.cursor()
+        if setting == 'VK':
+            cursor.execute("SELECT * FROM news WHERE send_vk = 0")
+            messages = cursor.fetchall()
+            cursor.execute("UPDATE news SET send_vk = 1 WHERE send_vk = 0")
+            return messages
+        elif setting == 'telegram':
+            cursor.execute("SELECT * FROM news WHERE send_telegram = 0")
+            messages = cursor.fetchall()
+            cursor.execute("UPDATE news SET send_telegram = 1 WHERE send_telegram = 0")
+            return messages
+        elif setting == 'mail':
+            cursor.execute("SELECT * FROM news WHERE send_mail = 0")
+            messages = cursor.fetchall()
+            cursor.execute("UPDATE news SET send_mail = 1 WHERE send_mail = 0")
+            return messages
+        elif setting == 'users':
+            cursor.execute("SELECT * FROM users")
+            return cursor.fetchall()
+
+
+def checkparam(setting):
+    connect = pymysql.connect(
+        host='localhost',
+        port=3308,
+        user='root',
+        password='',
+        db='ksu'
+    )
+    with connect:
+        cursor = connect.cursor()
+        if setting == 'VK':
+            sqlres = cursor.execute("SELECT * FROM `parametres` WHERE id = 1 AND send_vk = TRUE")
+            if sqlres > 0:
+                return True
+        elif setting == 'telegram':
+            sqlres = cursor.execute("SELECT * FROM `parametres` WHERE id = 1 AND send_telegram = TRUE")
+            if sqlres > 0:
+                return True
+        elif setting == 'mail':
+            sqlres = cursor.execute("SELECT * FROM `parametres` WHERE id = 1 AND send_mail = TRUE")
+            if sqlres > 0:
+                return True
+        return False
