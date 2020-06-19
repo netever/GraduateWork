@@ -12,7 +12,3 @@ for data in alldata:
         identify.getType(data)                  #определяется для кого новость
         save_data.save_db(data)                 #новость сохраняется в базу данных
 send_in.all()                                   #рассылка новостей
-
-
-
-
