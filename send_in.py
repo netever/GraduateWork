@@ -19,6 +19,7 @@ def all ():
 def __telegram ():
     file = open("C://auth.txt", "r")
     token = file.readline()                                             #Берётся токен из файла auth.txt
+    token = token[:-1]
     bot = telebot.TeleBot(token)
     bot.config['api_key'] = token
     messages = save_data.news('telegram')                                         #Достаётся новость из базы данных
