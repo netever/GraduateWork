@@ -46,7 +46,7 @@ def __VK ():
     messages = save_data.news('VK')
     for message in messages:
         strmess = message[1] + '\n' + message[2] + '\n' + message[3]
-        vk.wall.post(from_group=1, owner_id='-195203785', message=strmess) #Отправка новости
+        vk.wall.post(from_group=1, owner_id='owner_id', message=strmess) #Отправка новости
         time.sleep(2)
 
 
