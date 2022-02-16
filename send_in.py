@@ -58,7 +58,7 @@ def __mail():
     messages = save_data.news('mail')
     for message in messages:
         host = "smtp.gmail.com"
-        password = 'ss145632'
+        password = 'password'
         subject = message[1]
         to_addr = []
         if message[5] == 'teacher' or message[5] == 'anybody':
